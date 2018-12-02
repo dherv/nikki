@@ -1,0 +1,20 @@
+html {
+  font-size: 16px;
+}
+
+body {
+  font-size: 1rem;
+  font-family: var(--font-main);
+}
+
+main {
+  margin: 6rem 2rem;
+}
+
+
+textarea {
+  resize: none;
+  width: 100%;
+  height: auto;
+  min-height: 20rem;
+}

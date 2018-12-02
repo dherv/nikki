@@ -1,0 +1,12 @@
+.button {
+  color: var(--color-font-white);
+  background-color: var(--color-main);
+  padding: .8rem 1.6rem;
+  border: none;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+  transition: all .3s ease-out;
+  &:hover {
+    background-color: #00bcd4;
+  }
+}
