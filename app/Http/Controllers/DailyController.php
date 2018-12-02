@@ -80,7 +80,7 @@ class DailyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Daily $daily, Word $word)
+    public function update(Request $request, Daily $daily)
     {
         $this->validate($request, [
             'body' => 'required|min:10',
@@ -91,7 +91,6 @@ class DailyController extends Controller
             'grammars.*.explanation' => 'required|min:10',
             'grammars.*.example' => 'required|min:10',
             'grammars.*.example_translation' => 'required|min:10'
-
         ]);
 
         foreach ($request->words as $key => $value) {
@@ -101,28 +100,19 @@ class DailyController extends Controller
                 $daily->words()->save(new Word($value));
             }
         }
+
+        foreach ($request->grammars as $key => $value) {
+            $id = $value['id'];
+            $updated = $value['grammar'];
+            if (!$daily->grammars->contains('grammar', $updated)) {
+                $daily->grammars()->save(new Grammar($value));
+            }
+        }
      
-
-        // foreach($request->words as $key => $value) {
-            
-        //     $id = $request->words[$key]['id'];
-           
-        //     if(Word::find($id)) {
-        //        Word::find($id)->save($value);
-        //        dd(Word::find($id));
-        //     }
-        // }
-        // foreach($request->grammars as $key => $value) {
-        //     $id = $request->grammars[$key]['id'];
-        //     if(Grammar::find($id)) {
-        //         $grammar = Grammar::find($id)->firstOrCreate($value);
-        //     }
-        // }
-
-
-        dd(Word::all());
-
-        return response()->json(Word::all());
+        $daily->body = $request->body;
+        $daily->save();
+    
+        return response()->json(Daily::with('words', 'grammars')->find($daily->id));
     }
 
     /**

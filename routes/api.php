@@ -21,24 +21,24 @@ Route::post('/register', 'RegisterController@store');
 Route::post('/login', 'SessionController@store');
 
 // Route::group(['middleware' => ['authCheck']], function () {
-  Route::get('/dailies', 'DailyController@index');
- 
-  Route::post('/daily/create', 'DailyController@store');
-  Route::put('/daily/update/{daily}', 'DailyController@update');
-  Route::delete('/daily/{daily}', 'DailyController@destroy');
-  Route::get('/daily/{daily}', 'DailyController@show');
+Route::get('/dailies', 'DailyController@index');
 
-  Route::post('/word/{daily}', 'WordController@store');
-  Route::get('/words', 'WordController@index');
+Route::post('/daily/create', 'DailyController@store');
+Route::put('/daily/update/{daily}', 'DailyController@update');
+Route::delete('/daily/{daily}', 'DailyController@destroy');
+Route::get('/daily/{daily}', 'DailyController@show');
 
-  Route::post('/grammar/{daily}', 'GrammarController@store');
-  Route::get('/grammars', 'GrammarController@index');
+Route::post('/word/{daily}', 'WordController@store');
+Route::get('/words', 'WordController@index');
 
-  Route::post('/language/create', 'LanguageController@store');
-  Route::get('/languages', 'LanguageController@index');
+Route::post('/grammar/{daily}', 'GrammarController@store');
+Route::get('/grammars', 'GrammarController@index');
 
-  Route::put('/language/{language}', 'LanguageController@update');
+Route::post('/language/create', 'LanguageController@store');
+Route::get('/languages', 'LanguageController@index');
 
-  Route::get('/logout', 'SessionController@destroy');
+Route::put('/language/{language}', 'LanguageController@update');
+
+Route::get('/logout', 'SessionController@destroy');
 // });
 
