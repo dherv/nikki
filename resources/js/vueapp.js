@@ -13,7 +13,7 @@ Vue.use(Vuetify, {
 })
 
 
-const app = new Vue({
+new Vue({
     el: '#app',
     components: { App },
     router,

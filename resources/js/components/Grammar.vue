@@ -1,44 +1,82 @@
 <template>
-  <div>
-    <h1 class="subheading grey--text">Grammar</h1>
-    <v-container fluid class="my-5">
-      <v-card flat class="pa-3" v-for="item in items" v-bind:key="item.grammar">
-        <v-layout row wrap >
-          <v-flex xs12 sm3>
-            <h5 class="caption grey--text">Grammar Point</h5>
-            <p >{{item.grammar}}</p>
-          </v-flex>
-          <v-flex xs12 sm3>
-            <h5 class="caption grey--text">Example</h5>
-            <p>{{item.example}}</p>
-          </v-flex>
-          <v-flex xs12 sm3>
-            <h5 class="caption grey--text">Example Translation</h5>
-            <p>{{item.example_translation}}</p>
-          </v-flex>
-          <v-flex xs12 sm3>
-            <h5 class="caption grey--text">Explanation</h5>
-            <p>{{item.explanation}}</p>
-          </v-flex>
-        </v-layout>
-      </v-card>
-    </v-container>
-  </div>
+  <form>
+    <v-text-field v-model="example" label="example" color="orange darken-3" required></v-text-field>
+    <v-text-field
+      v-model="example_translation"
+      label="example translation"
+      color="orange darken-3"
+      required
+    ></v-text-field>
+    <v-text-field v-model="explanation" label="explanation" color="orange darken-3" required></v-text-field>
+    <v-btn color="orange darken-3 white--text" v-on:click.prevent="sendWord">add</v-btn>
+  </form>
 </template>
 <script>
+  import { postData, putData } from "../fetch";
   export default {
+    props: ["selection", "id", "url", "method"],
     data() {
       return {
-        items: null
+        grammar: this.selection.grammar,
+        example: this.selection.example,
+        example_translation: this.selection.example_translation,
+        explanation: this.selection.explanation
       };
     },
-    mounted() {
-      fetch("/api/grammars")
-        .then(response => {
-          console.log(response);
-          return response.json();
-        })
-        .then(response => (this.items = response));
+    methods: {
+      sendWord(event) {
+        // TODO: everytime updqte sidebar with saved infos of current daily
+        // TODO: add delete
+
+        // if (this.type === "word") {
+        //   postData(`api/word/${this.id}`, {
+        //     word: this.selection,
+        //     translation: this.translation,
+        //     ruby: this.ruby
+        //   }).then(response => {
+        //     if (response.ok) {
+        //       this.selection = null;
+        //       this.translation = null;
+        //       this.ruby = null;
+        //     }
+        //   });
+        // }
+        // if (this.type === "grammar") {
+        if (this.method === "put") {
+          console.log("here", this.url);
+          putData(this.url, {
+            grammar: this.grammar,
+            example: this.example,
+            example_translation: this.example_translation,
+            explanation: this.explanation
+          }).then(response => {
+            if (response.ok) {
+              (this.grammar = null),
+                (this.example = null),
+                (this.example_translation = null),
+                (this.explanation = null);
+                this.$emit('update')
+            }
+          });
+        } else {
+          postData(this.url, {
+            grammar: this.grammar,
+            example: this.example,
+            example_translation: this.example_translation,
+            explanation: this.explanation
+          }).then(response => {
+            if (response.ok) {
+             return response.json()
+            }
+          }).then(response => {
+             (this.grammar = null),
+                (this.example = null),
+                (this.example_translation = null),
+                (this.explanation = null);
+          });
+        }
+      }
     }
+    // },
   };
 </script>

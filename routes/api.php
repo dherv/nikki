@@ -29,9 +29,11 @@ Route::delete('/daily/{daily}', 'DailyController@destroy');
 Route::get('/daily/{daily}', 'DailyController@show');
 
 Route::post('/word/{daily}', 'WordController@store');
+Route::put('/word/{word}', "WordController@update");
 Route::get('/words', 'WordController@index');
 
 Route::post('/grammar/{daily}', 'GrammarController@store');
+Route::put('/grammar/{grammar}', "GrammarController@update");
 Route::get('/grammars', 'GrammarController@index');
 
 Route::post('/language/create', 'LanguageController@store');
@@ -40,5 +42,6 @@ Route::get('/languages', 'LanguageController@index');
 Route::put('/language/{language}', 'LanguageController@update');
 
 Route::get('/logout', 'SessionController@destroy');
+
 // });
 

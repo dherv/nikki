@@ -33,32 +33,8 @@
               <v-radio label="word" color="indigo darken-3" value="word" v-on:change="selectType"></v-radio>
             </v-radio-group>
           </form>
-          <form v-show="type" v-if="type==='word'">
-            <v-text-field
-              v-model="translation"
-              label="translation"
-              color="indigo darken-3"
-              required
-            ></v-text-field>
-            <v-text-field v-model="ruby" label="ruby" color="indigo darken-3" required></v-text-field>
-            <v-btn color="indigo darken-3 white--text" v-on:click.prevent="sendWord">add</v-btn>
-          </form>
-          <form v-show="type" v-else-if="type==='grammar'">
-            <v-text-field v-model="example" label="example" color="orange darken-3" required></v-text-field>
-            <v-text-field
-              v-model="example_translation"
-              label="example translation"
-              color="orange darken-3"
-              required
-            ></v-text-field>
-            <v-text-field
-              v-model="explanation"
-              label="explanation"
-              color="orange darken-3"
-              required
-            ></v-text-field>
-            <v-btn color="orange darken-3 white--text" v-on:click.prevent="sendWord">add</v-btn>
-          </form>
+          <word v-show="type" v-if="type==='word'" :selection="selection" :id='id' :url='`api/word/${this.id}`'/>
+          <grammar v-show="type" v-else-if="type==='grammar'" :selection="selection" :id='id' :url='`api/grammar/${this.id}`'/>
         </v-flex>
       </v-layout>
     </v-container>
@@ -66,16 +42,25 @@
 </template>
 <script>
   import { postData } from "../fetch";
+  import Word from "./Word/Word";
+  import Grammar from "./Grammar";
   export default {
+    components: {
+      Word,
+      Grammar
+    },
     data: function() {
       return {
         textarea: null,
         dailys: null,
         readonly: false,
         id: null,
-        selection: null,
-        translation: null,
-        ruby: null,
+        selection: {
+          word: null,
+          translation: null,
+          ruby: null
+        },
+
         type: null
       };
     },
@@ -92,42 +77,14 @@
             event.target.selectionEnd
           );
 
-          this.selection = selection;
+          this.selection = {
+            word: selection,
+            translation: null,
+            ruby: null
+          };
         }
       },
-      sendWord(event) {
-        // TODO: everytime updqte sidebar with saved infos of current daily
-        // TODO: add delete
 
-        if (this.type === "word") {
-          postData(`api/word/${this.id}`, {
-            word: this.selection,
-            translation: this.translation,
-            ruby: this.ruby
-          }).then(response => {
-            if (response.ok) {
-              this.selection = null;
-              this.translation = null;
-              this.ruby = null;
-            }
-          });
-        }
-        if (this.type === "grammar") {
-          postData(`api/grammar/${this.id}`, {
-            grammar: this.selection,
-            example: this.example,
-            example_translation: this.example_translation,
-            explanation: this.explanation
-          }).then(response => {
-            if (response.ok) {
-              (this.selection = null),
-                (this.example = null),
-                (this.example_translation = null),
-                (this.explanation = null);
-            }
-          });
-        }
-      },
       create(event) {
         postData("/api/daily/create", { body: this.textarea })
           .then(response => {

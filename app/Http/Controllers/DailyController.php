@@ -19,7 +19,7 @@ class DailyController extends Controller
     {
         $user = User::find(1);
 
-        return response()->json(Daily::with('words', 'grammars')->where('language_id', $user->language_id)->get());
+        return response()->json(Daily::with('words', 'grammars')->where('language_id', $user->language_id)->orderBy('created_at', 'desc')->get());
     }
 
     /**
@@ -59,7 +59,7 @@ class DailyController extends Controller
     public function show($id)
     {
 
-        return response()->json(Daily::with('words')->find($id));
+        return response()->json(Daily::with('words', 'grammars')->find($id));
     }
 
     /**

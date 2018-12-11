@@ -20,7 +20,7 @@ class GrammarController extends Controller
         // $grammars = Daily::with(['grammars' => function ($query) {
         //     $query->where('languag_id', $user->language_id);
         // }])->get();
-        $grammars = Daily::language()->with('grammars')->get()->pluck('grammars')->flatten();
+        $grammars = Daily::language()->with('grammars')->orderBy('created_at', 'desc')->get()->pluck('grammars')->flatten();
         return response()->json($grammars);
     }
 
@@ -93,9 +93,26 @@ class GrammarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Grammar $grammar)
     {
-        //
+        $this->validate(
+            $request,
+            [
+                'grammar' => 'required',
+                'explanation' => 'required|min:10',
+                'example' => 'required|min:10',
+                'example_translation' => 'required|min:10'
+            ]
+        );
+        
+        $grammar->grammar = $request->grammar;
+        $grammar->explanation = $request->explanation;
+        $grammar->example = $request->example;
+        $grammar->example_translation = $request->example_translation;
+
+        $grammar->save();
+
+        return response()->json($grammar);
     }
 
     /**

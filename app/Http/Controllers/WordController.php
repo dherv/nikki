@@ -16,7 +16,7 @@ class WordController extends Controller
      */
     public function index()
     {
-        $words = Daily::language()->with('words')->get()->pluck('words')->flatten();
+        $words = Daily::language()->with('words')->orderBy('created_at', 'desc')->get()->pluck('words')->flatten();
         return response()->json($words);
     }
 
@@ -82,9 +82,18 @@ class WordController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Word $word)
     {
-        //
+        $this->validate($request, [
+            "translation" => 'required',
+            'word' => 'required'
+        ]);
+        // dd($word);
+        $word->word = $request->word;
+        $word->translation = $request->translation;
+        $word->ruby = $request->ruby;
+        $word->save();
+        return response()->json($word);
     }
 
     /**

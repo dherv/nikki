@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use PragmaRX\Countries\Package\Countries;
+
 use Illuminate\Http\Request;
 use App\Language;
 use App\User;
@@ -18,6 +20,12 @@ class LanguageController extends Controller
         $user = User::find(1);
         $languages = $user->languages;
         return response()->json($languages);
+
+// $countries = new Countries();
+
+// $all = $countries->all()->ISL;
+
+// dd($all);
     }
 
     /**

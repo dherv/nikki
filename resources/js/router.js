@@ -7,9 +7,10 @@ Vue.use(VueRouter)
 
 import DailyList from './components/DailyList'
 import Editor from './components/Editor'
-import Words from './components/Words'
-import Grammar from './components/Grammar'
+import WordPage from './components/WordPage'
+import GrammarPage from './components/GrammarPage'
 import Login from './components/Login'
+import Edit from './components/Edit'
 
 const router = new VueRouter({
     mode: 'history',
@@ -41,15 +42,20 @@ const router = new VueRouter({
         {
             path: '/words',
             name: 'words',
-            component: Words,
+            component: WordPage,
 
         },   
         {
             path: '/grammars',
             name: 'grammar',
-            component: Grammar,
+            component: GrammarPage,
 
-        },     
+        },   
+        {path: '/daily/:id',
+        name: 'edit',
+        component: Edit,
+
+        }  
        
     ],
 })
