@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,7 +39,7 @@ Route::get('/languages', 'LanguageController@index');
 
 Route::put('/language/{language}', 'LanguageController@update');
 
+Route::post('/translate', 'TranslateController@index');
 Route::get('/logout', 'SessionController@destroy');
 
 // });
-
